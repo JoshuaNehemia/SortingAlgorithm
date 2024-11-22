@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SortingAlgorithm
 {
@@ -28,11 +29,8 @@ namespace SortingAlgorithm
 
 
             #region SELECT METHOD OF SORTING
-            var watch = System.Diagnostics.Stopwatch.StartNew();
             // the code that you want to measure 
             result = Solution.SinglyLinkedListSort(dataset);
-            watch.Stop();
-            double elapsedMs = watch.ElapsedMilliseconds;
             #endregion
 
             #region OUTPUT
@@ -42,24 +40,28 @@ namespace SortingAlgorithm
                 Console.Write(result[i] + " ");
             }
 
-            #region Performance Checker
-            //Accuracy tester
-            double counter =1;
+            #region PERFORMANCE
+            AccuracyTester(result, size);
+            #endregion
+            Console.ReadLine();
+            #endregion
+        }
+
+        static void AccuracyTester(int[] result, int size)
+        {
+            //Accuracy tester for debugging purposes
+            double counter = 1;
             double accuracy;
-            for ( int i=0; i< size-1;i++)
+            for (int i = 0; i < size - 1; i++)
             {
-                if (result[i] <= result[i+1])
+                if (result[i] <= result[i + 1])
                 {
                     counter++;
                 }
             }
             accuracy = counter / size;
             Console.WriteLine("");
-            Console.WriteLine("Accuracy : " + (accuracy*100) + "% (" + counter + "/"+size+")");
-            Console.WriteLine("Time elapsed : " + elapsedMs + " ms");
-            #endregion
-            Console.ReadLine();
-            #endregion
+            Console.WriteLine("Accuracy : " + (accuracy * 100) + "% (" + counter + "/" + size + ")");
         }
     }
 }

@@ -6,32 +6,50 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SortingAlgorithm
 {
     
     public class Solution
     {
+        #region SELECT SORTING ALGORITHM
+        public static int[] SelectSortingAlgorithm(int[] dataset)
+        {
+            int[] result = new int[dataset.Length];
+
+            //Interface
+            Console.WriteLine("Choose Algorithm :");
+            Console.WriteLine("1. Insertion Sort");
+            Console.WriteLine("2. Bubble Sort");
+            Console.WriteLine("3. Merge Sort");
+            Console.WriteLine("4. Quick Sort :");
+            Console.WriteLine("5. Quick Sort 3 Partition:");
+            Console.WriteLine("6. Heap Sort");
+            Console.WriteLine("7. Radix Sort");
+            Console.WriteLine("8. All");
+            Console.WriteLine("Select the sorting algorithm you wanted : ");
+            int algorithmChosen = int.Parse(Console.ReadLine());
+
+            switch(algorithmChosen)
+            {
+                case 1 :
+                    SinglyLinkedListSort(dataset);
+                    break;
+
+            }
+            return result;
+        }
+        #endregion
+
 
         #region SINGLY LINKED LIST SORTING SOLUTION
-        private static void CheckNextNode(ref Node tempBufs, Node helper)
-        {
-
-            while (helper.Next != null)
-            {
-                if (helper.Next.Key > tempBufs.Key)
-                {
-                    //Insert Node
-                    tempBufs.Next = helper.Next;
-                    helper.Next = tempBufs;
-                    return;
-                }
-                helper = helper.Next;
-            }
-            helper.Next = tempBufs;
-        }
         public static int[] SinglyLinkedListSort(int[] array)
-        {   
+        {
+            //To Calculate Time
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            //Algorithm
             int size = array.Length;
             int[] result = new int[size];
             Node head = new Node(array[0], null);
@@ -59,23 +77,25 @@ namespace SortingAlgorithm
                     }
                     else
                     {
-                        CheckNextNode(ref tempBuf, helper);
+                        SinglyLinkedList.CheckNextNode(ref tempBuf, helper);
                     }
                 }
             }
-            //To Convert Node.Key into an array of int
-            Node transfer = list.Head;
-            int counter=0;
-            while (transfer.Next != null) 
-            {
-                result[counter] = transfer.Key;
-                counter++;
-                transfer = transfer.Next;
-            }
-            result[counter] = transfer.Key;
-            Console.WriteLine("Sorted With Singly Linked List");
+            result = SinglyLinkedList.TranslateToArray(list, size);
+
+            //Timer End
+            watch.Stop();
+            double elapsedMs = watch.ElapsedMilliseconds;
+
+            //Print to call 
+            Console.WriteLine("Sorted With Singly Linked List in " + elapsedMs + " ms");
             return result;
         }
         #endregion
+
+        #region HEAP SORT
+
+        #endregion
+
     }
 }
